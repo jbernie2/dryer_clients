@@ -1,0 +1,10 @@
+# Nix stuff
+outputs/
+
+# editor temp files
+*.swp
+*.swo
+tags
+
+#compiled gem files
+*.gem
