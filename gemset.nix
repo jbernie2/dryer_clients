@@ -153,10 +153,10 @@
     platforms = [];
     source = {
       remotes = ["http://rubygems.org"];
-      sha256 = "1v9wn7lkbmsqdrwap39nyf9n5n5ncghkkc5gcva0v8np8p25dfqn";
+      sha256 = "1iyq74gd1kxbbck3lbqrswz2jx8bbpzz4hxlr5cwarlw6v3rkwr1";
       type = "gem";
     };
-    version = "2.0.0";
+    version = "2.0.1";
   };
   io-console = {
     groups = ["default" "development"];

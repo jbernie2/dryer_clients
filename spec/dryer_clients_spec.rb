@@ -20,8 +20,9 @@ RSpec.describe Dryer::Clients do
   let(:client) do 
     described_class::Create
       .call(api_desc)
-      #.new(base_url)
+      .new(base_url)
   end
+
   let(:base_url) { "https://test.com" }
   let(:api_desc) do
     {
