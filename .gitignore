@@ -8,3 +8,6 @@ tags
 
 #compiled gem files
 *.gem
+
+# irb files
+.irb_history
