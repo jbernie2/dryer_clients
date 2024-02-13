@@ -15,7 +15,9 @@ module Dryer
       def call
         validate_api_description.then do |errors|
           if errors.empty?
-            Success(GeneratedClient)
+            Success(
+              GeneratedClients::Create.call(api_desc)
+            )
           else
             Failure(errors)
           end

@@ -18,6 +18,13 @@ RSpec.describe Dryer::Clients::Create do
     end)
   end
 
+  let(:generated_client) do 
+    described_class
+      .call(api_desc)
+      .success
+      .new("https://example.com")
+  end
+
   let(:client) do 
     described_class
       .call(api_desc)
@@ -42,7 +49,7 @@ RSpec.describe Dryer::Clients::Create do
 
   let(:bar_resource_desc) do
     {
-      url: "/bar",
+      url: "/bars",
       actions: {
         create: {
           method: :post,
