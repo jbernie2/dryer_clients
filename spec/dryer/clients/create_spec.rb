@@ -1,6 +1,5 @@
 require_relative "../../../lib/dryer_clients.rb"
 require 'dry-validation'
-require 'debug'
 
 RSpec.describe Dryer::Clients::Create do
 
@@ -68,7 +67,7 @@ RSpec.describe Dryer::Clients::Create do
     end
 
     it "returns a GeneratedClient class" do
-      expect(client.success).to eq(Dryer::Clients::GeneratedClient)
+      expect(client.success).to be < Dryer::Clients::GeneratedClient
     end
 
     context "when the description is an array" do

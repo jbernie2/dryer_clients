@@ -1,4 +1,15 @@
 {
+  addressable = {
+    dependencies = ["public_suffix"];
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["http://rubygems.org"];
+      sha256 = "0irbdwkkjwzajq1ip6ba46q49sxnrl2cw7ddkdhsfhb6aprnm3vr";
+      type = "gem";
+    };
+    version = "2.8.6";
+  };
   bigdecimal = {
     groups = ["default"];
     platforms = [];
@@ -18,6 +29,17 @@
       type = "gem";
     };
     version = "1.2.3";
+  };
+  crack = {
+    dependencies = ["bigdecimal" "rexml"];
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["http://rubygems.org"];
+      sha256 = "0jaa7is4fw1cxigm8vlyhg05bw4nqy4f91zjqxk7pp4c8bdyyfn8";
+      type = "gem";
+    };
+    version = "1.0.0";
   };
   debug = {
     dependencies = ["irb" "reline"];
@@ -158,6 +180,16 @@
     };
     version = "2.0.1";
   };
+  hashdiff = {
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["http://rubygems.org"];
+      sha256 = "1jf9dxgjz6z7fvymyz2acyvn9iyvwkn6d9sk7y4fxwbmfc75yimm";
+      type = "gem";
+    };
+    version = "1.1.0";
+  };
   io-console = {
     groups = ["default" "development"];
     platforms = [];
@@ -190,6 +222,16 @@
     };
     version = "5.1.2";
   };
+  public_suffix = {
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["http://rubygems.org"];
+      sha256 = "1bni4qjrsh2q49pnmmd6if4iv3ak36bd2cckrs6npl111n769k9m";
+      type = "gem";
+    };
+    version = "5.0.4";
+  };
   rdoc = {
     dependencies = ["psych"];
     groups = ["default" "development"];
@@ -211,6 +253,16 @@
       type = "gem";
     };
     version = "0.4.2";
+  };
+  rexml = {
+    groups = ["default" "development"];
+    platforms = [];
+    source = {
+      remotes = ["http://rubygems.org"];
+      sha256 = "05i8518ay14kjbma550mv0jm8a6di8yp5phzrd8rj44z9qnrlrp0";
+      type = "gem";
+    };
+    version = "3.2.6";
   };
   rspec = {
     dependencies = ["rspec-core" "rspec-expectations" "rspec-mocks"];
@@ -275,6 +327,17 @@
       type = "gem";
     };
     version = "3.1.0";
+  };
+  webmock = {
+    dependencies = ["addressable" "crack" "hashdiff"];
+    groups = ["development"];
+    platforms = [];
+    source = {
+      remotes = ["http://rubygems.org"];
+      sha256 = "0rc3g9hhxi6v2l1cp9q3kcjd92bhmdbrb517l4v5pyzwq2nflcyc";
+      type = "gem";
+    };
+    version = "3.20.0";
   };
   zeitwerk = {
     groups = ["default"];

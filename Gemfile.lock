@@ -9,8 +9,13 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
+    addressable (2.8.6)
+      public_suffix (>= 2.0.2, < 6.0)
     bigdecimal (3.1.6)
     concurrent-ruby (1.2.3)
+    crack (1.0.0)
+      bigdecimal
+      rexml
     debug (1.9.1)
       irb (~> 1.10)
       reline (>= 0.3.8)
@@ -54,16 +59,19 @@ GEM
       zeitwerk (~> 2.6)
     dryer_services (2.0.1)
       dry-monads (~> 1.6)
+    hashdiff (1.1.0)
     io-console (0.7.2)
     irb (1.11.2)
       rdoc
       reline (>= 0.4.2)
     psych (5.1.2)
       stringio
+    public_suffix (5.0.4)
     rdoc (6.6.2)
       psych (>= 4.0.0)
     reline (0.4.2)
       io-console (~> 0.5)
+    rexml (3.2.6)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -78,6 +86,10 @@ GEM
       rspec-support (~> 3.13.0)
     rspec-support (3.13.0)
     stringio (3.1.0)
+    webmock (3.20.0)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     zeitwerk (2.6.13)
 
 PLATFORMS
@@ -87,6 +99,7 @@ DEPENDENCIES
   debug (~> 1.8)
   dryer_clients!
   rspec (~> 3.10)
+  webmock (~> 3.14)
 
 BUNDLED WITH
    2.4.22

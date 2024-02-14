@@ -10,12 +10,12 @@ module Dryer
 
         def call
           api_desc.inject(Class.new(GeneratedClient)) do |client, resource|
-            resource = Resources::Create.call(resource)
+            resource_object = Resources::Create.call(resource)
             client.send(
               :define_method,
               ApiDescriptions::Resources::GenerateName.call(resource)
             ) do
-              resource
+              resource_object.new(self.base_url)
             end
             client
           end

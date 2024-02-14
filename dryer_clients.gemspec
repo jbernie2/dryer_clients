@@ -26,5 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dryer_services", "~> 2.0"
 
   spec.add_development_dependency "rspec", "~> 3.10"
+  spec.add_development_dependency "webmock", "~> 3.14"
   spec.add_development_dependency "debug", "~> 1.8"
 end
