@@ -56,19 +56,31 @@ RSpec.describe Dryer::Clients::GeneratedClients::Resources::Create do
   end 
 
   context "when calling an action" do
+    let(:http) do
+      instance_double(
+        Net::HTTP,
+        send_request: response
+      )
+    end
 
-    let(:http) { instance_double(Net::HTTP, send_request: "foo") }
+    let(:response) do
+      instance_double(
+        Net::HTTPResponse,
+        code: 200,
+        body: { foo: "boo" }.to_json
+      )
+    end
+
     before do
       allow(Net::HTTP)
         .to receive(:start).and_yield(http)
     end
 
     it "sends a request to the url, with the provided path variables, headers, and body" do
-
       resource.new(base_url).update(
         "foo_id",
         headers: { bar: "baz" },
-        body: { quux: "wat" }
+        body: { bar: "wat" }
       )
 
       expect(Net::HTTP)
@@ -79,9 +91,65 @@ RSpec.describe Dryer::Clients::GeneratedClients::Resources::Create do
         .with(
           "PATCH",
           "/foos/foo_id",
-          { quux: "wat" }.to_json,
+          { bar: "wat" }.to_json,
           { bar: "baz" }
         )
+    end
+
+    it "returns a success monad containing a response object" do
+      response = resource.new(base_url).update(
+        "foo_id",
+        headers: { bar: "baz" },
+        body: { bar: "wat" }
+      )
+      expect(response).to be_a(Dry::Monads::Success)
+      expect(response.success).to be_a(
+        Dryer::Clients::GeneratedClients::Response
+      )
+      expect(response.success.raw_response.body).to eq({ foo: "boo" }.to_json)
+    end
+
+    context "when part of the request does not match the provided contract" do
+      it "returns a failure with an error message" do
+        response = resource.new(base_url).update(
+          "foo_id",
+          body: { invalid: "payload" }
+        )
+        expect(response).to be_a(Dry::Monads::Failure)
+        expect(response.failure).to be_a(StandardError)
+      end
+    end
+
+    context "when part of the response does not match the provided contract" do
+
+      let(:response) do
+        instance_double(
+          Net::HTTPResponse,
+          code: 200,
+          body: { grr: "boo" }.to_json
+        )
+      end
+
+      it "returns a failure with an error message" do
+        response = resource.new(base_url).update(
+          "foo_id",
+          body: { bar: "wat" }
+        )
+        expect(response).to be_a(Dry::Monads::Failure)
+        expect(response.failure).to be_a(StandardError)
+      end
+    end
+  end
+
+  context "when making a request to a badly formed url" do
+    let(:base_url) { "some garbage" }
+    it "returns a failure" do
+      response = resource.new(base_url).update(
+        "foo_id",
+        body: { bar: "wat" }
+      )
+      expect(response).to be_a(Dry::Monads::Failure)
+      expect(response.failure).to be_a(StandardError)
     end
   end
 end

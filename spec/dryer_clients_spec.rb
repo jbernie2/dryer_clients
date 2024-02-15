@@ -50,8 +50,8 @@ RSpec.describe Dryer::Clients do
         body: { bar: 'baz' },
         headers: { quux: 'wat' },
       )
-      expect(response.code).to eq("200")
-      expect(response.body).to eq({foo: 'bar'}.to_json)
+      expect(response.success.code).to eq("200")
+      expect(response.success.body).to eq({foo: 'bar'}.to_json)
     end
   end
 

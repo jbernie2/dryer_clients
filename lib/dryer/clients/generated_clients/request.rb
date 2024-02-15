@@ -48,7 +48,7 @@ module Dryer
         end
 
         def path_variable_keys
-          path.match(/(:\w*)/)
+          path.scan(/:\w+/)
         end
       end
     end
