@@ -22,6 +22,14 @@ module Dryer
           File.open(File.expand_path(gemspec_path), "w") do |f|
             f.write(gemspec)
           end
+
+          FileUtils.mkdir_p("#{output_directory}/lib")
+          File.open(File.expand_path(main_executable_path), "w") do |f|
+            f.write(main_executable)
+          end
+
+          FileUtils.mkdir_p("#{output_directory}/lib/contracts")
+          FileUtils.cp_r(File.expand_path(contract_directory), "#{output_directory}/lib")
         end
 
         private
@@ -33,6 +41,14 @@ module Dryer
 
         def gemspec
           "foo"
+        end
+
+        def main_executable_path
+          "#{output_directory}/lib/#{gem_name}.rb"
+        end
+
+        def main_executable
+          "bar"
         end
       end
     end

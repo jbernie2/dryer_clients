@@ -15,9 +15,12 @@ RSpec.describe Dryer::Clients do
   end
 
   let(:gem_name) { "test_api" }
-  let(:output_dir) { "spec/outputs/#{gem_name}" }
+  let(:base_output_dir) { "spec/outputs" }
+  let(:output_dir) { "#{base_output_dir}/#{gem_name}" }
   let(:contract_dir) { "spec/contracts" }
   let(:generated_gemspec_path) { "#{output_dir}/#{gem_name}.gemspec" }
+  let(:generated_client_path) { "#{output_dir}/lib/#{gem_name}.rb" }
+  let(:contract_output_path) { "#{output_dir}/lib/#{gem_name}/contracts" }
 
   let(:client) do 
     described_class::Create
@@ -48,7 +51,7 @@ RSpec.describe Dryer::Clients do
     end
 
     after do
-      FileUtils.rm_r(output_dir)
+      FileUtils.rm_r(base_output_dir)
     end
 
     it "creates a gemspec file for the client" do
@@ -60,7 +63,8 @@ RSpec.describe Dryer::Clients do
     end
 
     it "outputs the contracts to the specified directory" do
-      expect(File).to exist(contract_output_path)
+      expect(File).to exist("#{contract_output_path}/foo_create_response_contract.rb")
+      expect(File).to exist("#{contract_output_path}/foo_create_request_contract.rb")
     end
 
     it "returns a reference to the generated client class" do
