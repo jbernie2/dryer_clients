@@ -2,12 +2,26 @@ require_relative "../lib/dryer_clients.rb"
 require_relative "./contracts/foo_create_request_contract.rb"
 require_relative "./contracts/foo_create_response_contract.rb"
 require 'webmock/rspec'
+require 'fileutils'
 
 RSpec.describe Dryer::Clients do
+  let(:generate_client_gem) do
+    described_class::Gems::Create.call(
+      api_description: api_desc,
+      gem_name: gem_name,
+      output_directory: output_dir,
+      contract_directory: contract_dir
+    )
+  end
+
+  let(:gem_name) { "test_api" }
+  let(:output_dir) { "spec/outputs/#{gem_name}" }
+  let(:contract_dir) { "spec/contracts" }
+  let(:generated_gemspec_path) { "#{output_dir}/#{gem_name}.gemspec" }
+
   let(:client) do 
     described_class::Create
       .call(api_desc)
-      .success
       .new(base_url)
   end
 
@@ -27,8 +41,34 @@ RSpec.describe Dryer::Clients do
     }
   end
 
-  context "when given an API description" do
 
+  context "when generating a gem for the client" do
+    before do
+      generate_client_gem
+    end
+
+    after do
+      FileUtils.rm_r(output_dir)
+    end
+
+    it "creates a gemspec file for the client" do
+      expect(File).to exist(generated_gemspec_path)
+    end
+
+    it "outputs the generated client to the specified directory" do
+      expect(File).to exist(generated_client_path)
+    end
+
+    it "outputs the contracts to the specified directory" do
+      expect(File).to exist(contract_output_path)
+    end
+
+    it "returns a reference to the generated client class" do
+      expect(generate_client_gem).to be_a(Dryer::Clients::GeneratedClient)
+    end
+  end
+
+  context "when generating the client" do
     before do
       stub_request(
         :post, "#{base_url}/foos"
@@ -45,7 +85,7 @@ RSpec.describe Dryer::Clients do
       )
     end
 
-    it "builds a client for that api" do
+    it "builds a client for api" do
       response = client.foos.create(
         body: { bar: 'baz' },
         headers: { quux: 'wat' },
