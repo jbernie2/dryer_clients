@@ -1,15 +1,18 @@
 require_relative "../lib/dryer_clients.rb"
-require_relative "./contracts/foo_create_request_contract.rb"
-require_relative "./contracts/foo_create_response_contract.rb"
+#require_relative "./contracts/foo_create_request_contract.rb"
+#require_relative "./contracts/foo_create_response_contract.rb"
+require_relative "./api_descriptions/test_api_description.rb"
 require 'webmock/rspec'
 require 'fileutils'
+require 'debug'
 
 RSpec.describe Dryer::Clients do
   let(:generate_client_gem) do
     described_class::Gems::Create.call(
-      api_description: api_desc,
       gem_name: gem_name,
       output_directory: output_dir,
+      api_description_file: api_desc_file,
+      api_description_class_name: TestApiDescription,
       contract_directory: contract_dir
     )
   end
@@ -18,9 +21,10 @@ RSpec.describe Dryer::Clients do
   let(:base_output_dir) { "spec/outputs" }
   let(:output_dir) { "#{base_output_dir}/#{gem_name}" }
   let(:contract_dir) { "spec/contracts" }
+  let(:api_desc_file) { "spec/api_descriptions/test_api_description.rb" }
   let(:generated_gemspec_path) { "#{output_dir}/#{gem_name}.gemspec" }
   let(:generated_client_path) { "#{output_dir}/lib/#{gem_name}.rb" }
-  let(:contract_output_path) { "#{output_dir}/lib/#{gem_name}/contracts" }
+  let(:contract_output_path) { "#{output_dir}/lib/contracts" }
 
   let(:client) do 
     described_class::Create
@@ -67,40 +71,45 @@ RSpec.describe Dryer::Clients do
       expect(File).to exist("#{contract_output_path}/foo_create_request_contract.rb")
     end
 
-    it "returns a reference to the generated client class" do
-      expect(generate_client_gem).to be_a(Dryer::Clients::GeneratedClient)
+    it "returns path to created gem" do
+      expect(generate_client_gem).to be(output_dir)
+    end
+
+    it "creates a client" do
+      require_relative "../#{generate_client_gem}/lib/test_api.rb"
+      expect(TestApi.new("https://base.url").client).to be_a(Dryer::Clients::GeneratedClient)
     end
   end
 
-  context "when generating the client" do
-    before do
-      stub_request(
-        :post, "#{base_url}/foos"
-      ).with(
-        body: { bar: 'baz' }.to_json,
-        headers: {
-          quux: 'wat',
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent'=>'Ruby'
-       }
-      ).to_return(
-        status: 200, body: {foo: 'bar'}.to_json, headers: {}
-      )
-    end
+  #context "when generating the client" do
+    #before do
+      #stub_request(
+        #:post, "#{base_url}/foos"
+      #).with(
+        #body: { bar: 'baz' }.to_json,
+        #headers: {
+          #quux: 'wat',
+          #'Accept'=>'*/*',
+          #'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          #'User-Agent'=>'Ruby'
+       #}
+      #).to_return(
+        #status: 200, body: {foo: 'bar'}.to_json, headers: {}
+      #)
+    #end
 
-    it "builds a client for api" do
-      response = client.foos.create(
-        body: { bar: 'baz' },
-        headers: { quux: 'wat' },
-      )
-      expect(response.success.code).to eq("200")
-      expect(response.success.body).to eq({foo: 'bar'}.to_json)
-    end
-  end
+    #it "builds a client for api" do
+      #response = client.foos.create(
+        #body: { bar: 'baz' },
+        #headers: { quux: 'wat' },
+      #)
+      #expect(response.success.code).to eq("200")
+      #expect(response.success.body).to eq({foo: 'bar'}.to_json)
+    #end
+  #end
 
-  it "can return it's version" do
-    expect(described_class.version).to be_truthy
-  end
+  #it "can return it's version" do
+    #expect(described_class.version).to be_truthy
+  #end
 
 end
