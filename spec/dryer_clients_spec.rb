@@ -24,7 +24,7 @@ RSpec.describe Dryer::Clients do
   let(:api_desc_file) { "spec/api_descriptions/test_api_description.rb" }
   let(:generated_gemspec_path) { "#{output_dir}/#{gem_name}.gemspec" }
   let(:generated_client_path) { "#{output_dir}/lib/#{gem_name}.rb" }
-  let(:contract_output_path) { "#{output_dir}/lib/contracts" }
+  let(:contract_output_path) { "#{output_dir}/lib/#{gem_name}/contracts" }
 
   let(:client) do 
     described_class::Create
@@ -77,7 +77,7 @@ RSpec.describe Dryer::Clients do
 
     it "creates a client" do
       require_relative "../#{generate_client_gem}/lib/test_api.rb"
-      expect(TestApi.new("https://base.url").client).to be_a(Dryer::Clients::GeneratedClient)
+      expect(TestApi::Client.new("https://base.url").client).to be_a(Dryer::Clients::GeneratedClient)
     end
   end
 
