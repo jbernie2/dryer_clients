@@ -1,6 +1,6 @@
 require_relative "../lib/dryer_clients.rb"
-#require_relative "./contracts/foo_create_request_contract.rb"
-#require_relative "./contracts/foo_create_response_contract.rb"
+require_relative "./contracts/foo_create_request_contract.rb"
+require_relative "./contracts/foo_create_response_contract.rb"
 require_relative "./api_descriptions/test_api_description.rb"
 require 'webmock/rspec'
 require 'fileutils'
@@ -81,35 +81,35 @@ RSpec.describe Dryer::Clients do
     end
   end
 
-  #context "when generating the client" do
-    #before do
-      #stub_request(
-        #:post, "#{base_url}/foos"
-      #).with(
-        #body: { bar: 'baz' }.to_json,
-        #headers: {
-          #quux: 'wat',
-          #'Accept'=>'*/*',
-          #'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          #'User-Agent'=>'Ruby'
-       #}
-      #).to_return(
-        #status: 200, body: {foo: 'bar'}.to_json, headers: {}
-      #)
-    #end
+  context "when generating the client" do
+    before do
+      stub_request(
+        :post, "#{base_url}/foos"
+      ).with(
+        body: { bar: 'baz' }.to_json,
+        headers: {
+          quux: 'wat',
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent'=>'Ruby'
+       }
+      ).to_return(
+        status: 200, body: {foo: 'bar'}.to_json, headers: {}
+      )
+    end
 
-    #it "builds a client for api" do
-      #response = client.foos.create(
-        #body: { bar: 'baz' },
-        #headers: { quux: 'wat' },
-      #)
-      #expect(response.success.code).to eq("200")
-      #expect(response.success.body).to eq({foo: 'bar'}.to_json)
-    #end
-  #end
+    it "builds a client for api" do
+      response = client.foos.create(
+        body: { bar: 'baz' },
+        headers: { quux: 'wat' },
+      )
+      expect(response.success.code).to eq("200")
+      expect(response.success.body).to eq({foo: 'bar'}.to_json)
+    end
+  end
 
-  #it "can return it's version" do
-    #expect(described_class.version).to be_truthy
-  #end
+  it "can return it's version" do
+    expect(described_class.version).to be_truthy
+  end
 
 end
