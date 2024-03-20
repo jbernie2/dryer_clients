@@ -42,7 +42,7 @@ module Dryer
             files.append(
               MainFiles::Create.call(
                 gem_name: gem_name,
-                dependencies: files.map { |f| f[:path] },
+                gem_module_name: camelize(gem_name),
                 output_directory: lib_dir,
               )
             )

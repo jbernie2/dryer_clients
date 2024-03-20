@@ -51,6 +51,7 @@ module Dryer
                   'Gemfile'
                 ]
                 spec.add_dependency "dryer_clients", "~> 0.0"
+                spec.add_dependency "zeitwerk", "~> 2.6"
               end
             GEMSPEC
           end
