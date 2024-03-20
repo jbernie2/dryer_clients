@@ -46,11 +46,14 @@ module Dryer
                 output_directory: lib_dir,
               )
             )
+            files.append(
+              Gemfiles::Create.call(output_directory: output_directory)
+            )
+
             gemspec = GemspecFiles::Create.call(
               gem_name: gem_name,
               output_directory: output_directory
             )
-
             File.exist?(gemspec[:path]) ? files : files.append(gemspec)
           end.map do |file|
             FileUtils.mkdir_p(File.dirname(file[:path]))
