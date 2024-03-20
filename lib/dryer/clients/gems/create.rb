@@ -31,25 +31,21 @@ module Dryer
               gem_module_name: camelize(gem_name),
               input_file: api_description_file,
               output_directory: dependencies_dir
-            )
-          ).append(
+            ),
             ClientFiles::Create.call(
               gem_module_name: camelize(gem_name),
               api_description_class_name: api_description_class_name,
               output_directory: dependencies_dir
-            )
-          ).then do |files|
-            files.append(
-              MainFiles::Create.call(
+            ),
+            MainFiles::Create.call(
                 gem_name: gem_name,
                 gem_module_name: camelize(gem_name),
-                output_directory: lib_dir,
-              )
+                output_directory: lib_dir
+            ),
+            Gemfiles::Create.call(
+              output_directory: output_directory
             )
-            files.append(
-              Gemfiles::Create.call(output_directory: output_directory)
-            )
-
+          ).then do |files|
             gemspec = GemspecFiles::Create.call(
               gem_name: gem_name,
               output_directory: output_directory
