@@ -62,18 +62,14 @@ RSpec.describe Dryer::Clients::Create do
   end
 
   context "when given a valid API description" do
-    it "returns a success" do
-      expect(client).to be_a(Dry::Monads::Success)
-    end
-
     it "returns a GeneratedClient class" do
-      expect(client.success).to be < Dryer::Clients::GeneratedClient
+      expect(client).to be < Dryer::Clients::GeneratedClient
     end
 
     context "when the description is an array" do
       let(:api_desc) { [foo_resource_desc, bar_resource_desc] }
-      it "returns a success" do
-        expect(client).to be_a(Dry::Monads::Success)
+      it "returns a GeneratedClient class" do
+        expect(client).to be < Dryer::Clients::GeneratedClient
       end
     end
 
@@ -85,8 +81,8 @@ RSpec.describe Dryer::Clients::Create do
         )
       end
 
-      it "returns a success" do
-        expect(client).to be_a(Dry::Monads::Success)
+      it "returns a GeneratedClient class" do
+        expect(client).to be < Dryer::Clients::GeneratedClient
       end
     end
   end
@@ -95,15 +91,15 @@ RSpec.describe Dryer::Clients::Create do
     let(:api_desc) do
       { foo: "bar" }
     end
-    it "returns a failure" do
-      expect(client).to be_a(Dry::Monads::Failure)
+    it "raises an error" do
+      expect{client}.to raise_error(StandardError)
     end
   end
 
   context "when the API description is nil" do
     let(:api_desc) { nil }
     it "returns a failure" do
-      expect(client).to be_a(Dry::Monads::Failure)
+      expect{client}.to raise_error(StandardError)
     end
   end
 end
