@@ -10,11 +10,11 @@ module Dryer
         class Create < Dryer::Services::SimpleService
           def initialize(
             gem_name:,
-            dependencies:,
+            gem_module_name:,
             output_directory:
           )
             @gem_name = gem_name
-            @dependencies = dependencies
+            @gem_module_name = gem_module_name
             @output_directory = output_directory
           end
 
@@ -26,27 +26,19 @@ module Dryer
           end
 
           private
-          attr_reader :gem_name,
-            :dependencies,
-            :output_directory
+          attr_reader :gem_name, :gem_module_name, :output_directory
 
           def file_contents
             <<~MAIN
               require "dryer_clients"
-              #{require_dependencies}
+              require "zeitwerk"
+              loader = Zeitwerk::Loader.for_gem
+              loader.setup
+
+              module #{gem_module_name}
+
+              end
             MAIN
-          end
-
-          def require_dependencies
-            relative_dependency_paths.map do |p|
-              "require_relative './#{p}'"
-            end.join("\n")
-          end
-
-          def relative_dependency_paths
-            dependencies.map do |d|
-              Pathname.new(d).relative_path_from(output_directory).to_s
-            end
           end
         end
       end
