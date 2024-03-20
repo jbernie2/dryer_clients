@@ -34,7 +34,7 @@ module Dryer
             :output_directory
 
           def input_paths
-            Dir["#{input_directory}/*"].reject { |fn| File.directory?(fn) }
+            Dir["#{input_directory}/**/*"].reject { |fn| File.directory?(fn) }
           end
 
           def output_path(input_path)
