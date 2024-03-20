@@ -71,6 +71,10 @@ RSpec.describe Dryer::Clients do
       expect(File).to exist("#{contract_output_path}/foo_create_request_contract.rb")
     end
 
+    it "outputs a Gemfile for the client gem" do
+      expect(File).to exist("#{generate_client_gem}/Gemfile")
+    end
+
     it "returns path to created gem" do
       expect(generate_client_gem).to be(output_dir)
     end
