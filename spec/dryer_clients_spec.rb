@@ -12,7 +12,7 @@ RSpec.describe Dryer::Clients do
       gem_name: gem_name,
       output_directory: output_dir,
       api_description_file: api_desc_file,
-      api_description_class_name: TestApiDescription,
+      api_description_class_name: "TestApiDescription",
       contract_directory: contract_dir
     )
   end
