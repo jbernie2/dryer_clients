@@ -30,6 +30,7 @@ module Dryer
             ApiDescriptionFiles::Create.call(
               gem_module_name: camelize(gem_name),
               input_file: api_description_file,
+              api_description_class_name: api_description_class_name,
               output_directory: dependencies_dir
             ),
             ClientFiles::Create.call(
