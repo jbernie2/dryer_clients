@@ -11,7 +11,7 @@ RSpec.describe Dryer::Clients do
     described_class::Gems::Create.call(
       gem_name: gem_name,
       output_directory: output_dir,
-      api_description_file: api_desc_file,
+      api_description_file: File.expand_path(api_desc_file),
       api_description_class_name: "TestApiDescription",
       contract_directory: contract_dir
     )
@@ -24,6 +24,7 @@ RSpec.describe Dryer::Clients do
   let(:api_desc_file) { "spec/api_descriptions/test_api_description.rb" }
   let(:generated_gemspec_path) { "#{output_dir}/#{gem_name}.gemspec" }
   let(:generated_client_path) { "#{output_dir}/lib/#{gem_name}.rb" }
+  let(:api_desc_output_path) { "#{output_dir}/lib/test_api/test_api_description.rb" }
   let(:contract_output_path) { "#{output_dir}/lib/#{gem_name}/contracts" }
 
   let(:client) do 
@@ -60,6 +61,19 @@ RSpec.describe Dryer::Clients do
 
     it "creates a gemspec file for the client" do
       expect(File).to exist(generated_gemspec_path)
+    end
+
+    context "when generating the api specification" do
+      it "outputs it to the lib directory" do
+        expect(File).to exist("#{output_dir}/lib/test_api/api_description.rb")
+      end
+
+      it "converts the class names in the specification to strings" do
+        require_relative "../#{generate_client_gem}/lib/test_api.rb"
+        expect(
+          TestApi::ApiDescription.definition[:actions][:create][:request_contract]
+        ).to be_a(String)
+      end
     end
 
     it "outputs the generated client to the specified directory" do

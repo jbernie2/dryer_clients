@@ -40,7 +40,7 @@ module Dryer
 
                   def client
                     @client ||= Dryer::Clients::Create.call(
-                      #{api_description_class_name}.definition
+                      ApiDescription.definition
                     ).new(base_url)
                   end
 
