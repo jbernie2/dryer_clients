@@ -10,15 +10,13 @@ module Dryer
         def initialize(
           gem_name:,
           output_directory:,
-          api_description_file:,
-          api_description_class_name:,
+          api_description:,
           contract_directory:
         )
-          @api_description_file = api_description_file
-          @api_description_class_name = api_description_class_name
           @gem_name = gem_name
           @output_directory = output_directory
           @contract_directory = contract_directory
+          @api_description = api_description
         end
 
         def call
@@ -29,13 +27,11 @@ module Dryer
           ).append(
             ApiDescriptionFiles::Create.call(
               gem_module_name: camelize(gem_name),
-              input_file: api_description_file,
-              api_description_class_name: api_description_class_name,
+              api_description: api_description,
               output_directory: dependencies_dir
             ),
             ClientFiles::Create.call(
               gem_module_name: camelize(gem_name),
-              api_description_class_name: api_description_class_name,
               output_directory: dependencies_dir
             ),
             MainFiles::Create.call(
@@ -63,8 +59,7 @@ module Dryer
         end
 
         private
-        attr_reader :api_description_file,
-          :api_description_class_name,
+        attr_reader :api_description,
           :gem_name,
           :output_directory,
           :contract_directory

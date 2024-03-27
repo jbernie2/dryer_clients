@@ -10,48 +10,45 @@ module Dryer
         class Create < Dryer::Services::SimpleService
           def initialize(
             gem_module_name:,
-            input_file:,
-            api_description_class_name:,
+            api_description:,
             output_directory:
           )
             @gem_module_name = gem_module_name
-            @input_file = input_file
-            @api_description_class_name = api_description_class_name
+            @api_description = api_description
             @output_directory = output_directory
           end
 
           def call
             {
               path: "#{output_directory}/api_description.rb",
-              contents: api_description_file_contents(stringify_description)
+              contents: api_description_file_contents(stringify_class_names(api_description))
             }
           end
 
           private
           attr_reader :gem_module_name,
-            :input_file,
             :output_directory,
-            :api_description_class_name
+            :api_description
 
           def api_description_file_contents(description)
             <<~FILE
             module #{gem_module_name}
               class ApiDescription
                 def self.definition
-                  #{JSON.pretty_generate(description)}
+                  #{description}
                 end
               end
             end
             FILE
           end
 
-          def stringify_description
-            require input_file
-            stringify_hash(
-              Module.const_get(
-                api_description_class_name
-              ).definition
-            )
+          def stringify_class_names(description)
+            case description
+            when Array
+              description.map { |h| stringify_hash(h) }
+            when Hash
+              [ stringify_hash(description) ]
+            end
           end
 
           def stringify_hash(hash)

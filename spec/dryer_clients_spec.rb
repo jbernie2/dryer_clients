@@ -11,8 +11,7 @@ RSpec.describe Dryer::Clients do
     described_class::Gems::Create.call(
       gem_name: gem_name,
       output_directory: output_dir,
-      api_description_file: File.expand_path(api_desc_file),
-      api_description_class_name: "TestApiDescription",
+      api_description: TestApiDescription.definition,
       contract_directory: contract_dir
     )
   end
@@ -21,7 +20,6 @@ RSpec.describe Dryer::Clients do
   let(:base_output_dir) { "spec/outputs" }
   let(:output_dir) { "#{base_output_dir}/#{gem_name}" }
   let(:contract_dir) { "spec/contracts" }
-  let(:api_desc_file) { "spec/api_descriptions/test_api_description.rb" }
   let(:generated_gemspec_path) { "#{output_dir}/#{gem_name}.gemspec" }
   let(:generated_client_path) { "#{output_dir}/lib/#{gem_name}.rb" }
   let(:api_desc_output_path) { "#{output_dir}/lib/test_api/test_api_description.rb" }
@@ -71,7 +69,7 @@ RSpec.describe Dryer::Clients do
       it "converts the class names in the specification to strings" do
         require_relative "../#{generate_client_gem}/lib/test_api.rb"
         expect(
-          TestApi::ApiDescription.definition[:actions][:create][:request_contract]
+          TestApi::ApiDescription.definition.first[:actions][:create][:request_contract]
         ).to be_a(String)
       end
     end
