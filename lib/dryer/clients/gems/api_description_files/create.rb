@@ -55,7 +55,7 @@ module Dryer
             hash.inject({}) do |acc, (key, value)|
               acc[key] = case value
                 when Class
-                  value.to_s
+                  "#{gem_module_name}::#{value.to_s}"
                 when Hash
                   stringify_hash(value)
                 else
