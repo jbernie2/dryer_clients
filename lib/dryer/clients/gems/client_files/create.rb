@@ -10,11 +10,9 @@ module Dryer
         class Create < Dryer::Services::SimpleService
           def initialize(
             gem_module_name:,
-            api_description_class_name:,
             output_directory:
           )
             @gem_module_name = gem_module_name
-            @api_description_class_name = api_description_class_name
             @output_directory = output_directory
           end
 
@@ -27,7 +25,6 @@ module Dryer
 
           private
           attr_reader :gem_module_name,
-            :api_description_class_name,
             :output_directory
 
           def file_contents
