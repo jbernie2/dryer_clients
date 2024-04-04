@@ -2,7 +2,7 @@ require 'dryer_services'
 
 module Dryer
   module Clients
-    class Create < Dryer::Services::ResultService
+    class Create < Dryer::Services::SimpleService
 
       def initialize(*api_desc)
         if api_desc.is_a?(Array) && api_desc[0].is_a?(Array)
@@ -15,11 +15,9 @@ module Dryer
       def call
         validate_api_description.then do |errors|
           if errors.empty?
-            Success(
-              GeneratedClients::Create.call(api_desc)
-            )
+            GeneratedClients::Create.call(api_desc)
           else
-            Failure(errors)
+            raise errors
           end
         end
       end

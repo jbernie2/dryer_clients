@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name                  = 'dryer_clients'
-  spec.version               = "0.0.0"
+  spec.version               = "0.0.1"
   spec.authors               = ['John Bernier']
   spec.email                 = ['john.b.bernier@gmail.com']
   spec.summary               = 'Library that leverages dry contracts to generate API clients'

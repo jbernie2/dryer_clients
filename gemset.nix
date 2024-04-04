@@ -160,14 +160,14 @@
     version = "1.10.0";
   };
   dryer_clients = {
-    dependencies = ["dry-validation" "dryer_services" "zeitwerk"];
+    dependencies = ["dry-monads" "dry-validation" "dryer_services" "zeitwerk"];
     groups = ["default"];
     platforms = [];
     source = {
       path = ./.;
       type = "path";
     };
-    version = "0.0.0";
+    version = "0.0.1";
   };
   dryer_services = {
     dependencies = ["dry-monads"];

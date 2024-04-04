@@ -20,31 +20,47 @@ module Dryer
           end
 
           rule(:request_contract) do
-            if value && !(value <= Dry::Validation::Contract)
+            unless valid_contract?(value)
               key.failure('must be a dry-validation contract')
             end
           end
 
           rule(:url_parameters_contract) do
-            if value && !(value <= Dry::Validation::Contract)
+            unless valid_contract?(value)
               key.failure('must be a dry-validation contract')
             end
           end
 
           rule(:headers_contract) do
-            if value && !(value <= Dry::Validation::Contract)
+            unless valid_contract?(value)
               key.failure('must be a dry-validation contract')
             end
           end
 
           rule(:response_contracts) do
             values[:response_contracts].each do |key, value|
-              if !(value <= Dry::Validation::Contract)
+              unless valid_contract?(value)
                 key(:response_contracts).failure(
                   'must be a dry-validation contract'
                 )
               end
             end if values[:response_contracts]
+          end
+
+          def valid_contract?(value)
+            case value
+            when Class
+              value <= Dry::Validation::Contract
+            when String
+              begin
+                contract_class = Module.const_get(value)
+                contract_class <= Dry::Validation::Contract
+              rescue NameError => e
+                false
+              end
+            else
+                true
+            end
           end
         end
 
@@ -60,6 +76,7 @@ module Dryer
             end
           end
         end
+
       end
     end
   end

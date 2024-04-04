@@ -18,6 +18,10 @@ module Dryer
               # if I don't set a variable to the config it is not in scope
               # for the method definition
               resource_config = config
+              request_contract = get_contract(action_config[:request_contract])
+              headers_contract = get_contract(action_config[:headers_contract])
+              url_parameters_contract = get_contract(action_config[:url_parameters_contract])
+              response_contracts = get_contracts(action_config[:response_contracts])
 
               resource.send(
                 :define_method,
@@ -32,9 +36,9 @@ module Dryer
                   headers: headers,
                   body: body,
                   url_parameters: url_parameters,
-                  request_contract: action_config[:request_contract],
-                  headers_contract: action_config[:headers_contract],
-                  url_parameters_contract: action_config[:url_parameters_contract],
+                  request_contract: request_contract,
+                  headers_contract: headers_contract,
+                  url_parameters_contract: url_parameters_contract,
                   path: action_config[:url] || resource_config[:url]
                 ).bind do |_|
                   raw_response = Request.new(
@@ -59,6 +63,21 @@ module Dryer
           end
 
           attr_reader :config
+
+          def get_contracts(hash)
+            hash.inject({}) do |acc, (k,v)|
+              acc[k] = get_contract(v)
+            end
+          end
+
+          def get_contract(contract)
+            case contract
+            when String
+              Module.const_get(contract)
+            when Class
+              contract
+            end
+          end
         end
       end
     end
