@@ -1,4 +1,4 @@
-# Dryer Services
+# Dryer Clients
 A gem providing that generates an API client gem based on an api defintion.
 The API defintions depend heavily on [dry-validation](https://dry-rb.org/gems/dry-validation/1.8/) contracts
 for header/request/response validation
