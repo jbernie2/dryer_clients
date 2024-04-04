@@ -13,24 +13,24 @@ RSpec.describe Dryer::Clients::GeneratedClients::Resources::Create do
       actions: {
         create: {
           method: :post,
-          request_contract: FooCreateRequestContract,
+          request_contract: Contracts::FooCreateRequestContract,
           response_contracts: {
-            200 => FooCreateResponseContract,
+            200 => Contracts::FooCreateResponseContract,
           }
         },
         show: {
           url: "/foos/:id",
           method: :get,
           response_contracts: {
-            200 => FooCreateResponseContract,
+            200 => Contracts::FooCreateResponseContract,
           }
         },
         update: {
           url: "/foos/:id",
           method: :patch,
-          request_contract: FooCreateRequestContract,
+          request_contract: Contracts::FooCreateRequestContract,
           response_contracts: {
-            200 => FooCreateResponseContract,
+            200 => Contracts::FooCreateResponseContract,
           }
         }
       }

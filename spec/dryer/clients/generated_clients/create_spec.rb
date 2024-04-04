@@ -21,9 +21,9 @@ RSpec.describe Dryer::Clients::GeneratedClients::Create do
       actions: {
         create: {
           method: :post,
-          request_contract: FooCreateRequestContract,
+          request_contract: Contracts::FooCreateRequestContract,
           response_contracts: {
-            200 => FooCreateResponseContract,
+            200 => Contracts::FooCreateResponseContract,
           }
         }
       }
@@ -36,9 +36,9 @@ RSpec.describe Dryer::Clients::GeneratedClients::Create do
       actions: {
         create: {
           method: :post,
-          request_contract: FooCreateRequestContract,
+          request_contract: Contracts::FooCreateRequestContract,
           response_contracts: {
-            200 => FooCreateResponseContract,
+            200 => Contracts::FooCreateResponseContract,
           }
         }
       }

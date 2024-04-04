@@ -23,9 +23,9 @@ RSpec.describe Dryer::Clients::GeneratedClients::Requests::Validate do
   let(:headers) { {important: "things"} }
   let(:body) { {bar: "baz"} }
   let(:url_parameters) { {query: "string"} }
-  let(:url_parameters_contract) { UrlParametersContract }
-  let(:request_contract) { FooCreateRequestContract }
-  let(:headers_contract) { HeadersContract }
+  let(:url_parameters_contract) { Contracts::UrlParametersContract }
+  let(:request_contract) { Contracts::FooCreateRequestContract }
+  let(:headers_contract) { Contracts::HeadersContract }
   let(:path) { "foos/:id/bars/:id" }
 
   context "when the contract passes all validations" do

@@ -4,13 +4,13 @@ require 'dry-validation'
 RSpec.describe Dryer::Clients::Create do
 
   before do
-    stub_const("FooCreateRequestContract", Class.new(Dry::Validation::Contract) do
+    stub_const("Contracts::FooCreateRequestContract", Class.new(Dry::Validation::Contract) do
       params do
         required(:bar).filled(:string)
       end
     end)
 
-    stub_const("FooCreateResponseContract", Class.new(Dry::Validation::Contract) do
+    stub_const("Contracts::FooCreateResponseContract", Class.new(Dry::Validation::Contract) do
       params do
         required(:foo).filled(:string)
       end
@@ -37,9 +37,9 @@ RSpec.describe Dryer::Clients::Create do
       actions: {
         create: {
           method: :post,
-          request_contract: FooCreateRequestContract,
+          request_contract: Contracts::FooCreateRequestContract,
           response_contracts: {
-            200 => FooCreateResponseContract,
+            200 => Contracts::FooCreateResponseContract,
           }
         }
       }
@@ -52,9 +52,9 @@ RSpec.describe Dryer::Clients::Create do
       actions: {
         create: {
           method: :post,
-          request_contract: FooCreateRequestContract,
+          request_contract: Contracts::FooCreateRequestContract,
           response_contracts: {
-            200 => FooCreateResponseContract,
+            200 => Contracts::FooCreateResponseContract,
           }
         }
       }
